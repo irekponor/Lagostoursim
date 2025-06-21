@@ -1,7 +1,6 @@
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
-import L from "leaflet";
 
 const Tourism = () => {
   const [geoData, setGeoData] = useState<any>(null);
@@ -19,7 +18,7 @@ const Tourism = () => {
 
     const popupContent = `
       <strong>${name}</strong><br/>
-      <span>${description}</span>
+      <span>,<i>${description}</i></span>
     `;
     layer.bindPopup(popupContent);
   };
