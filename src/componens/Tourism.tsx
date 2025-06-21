@@ -1,7 +1,6 @@
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
-import L from "leaflet";
 
 const Tourism = () => {
   const [geoData, setGeoData] = useState(null);
