@@ -1,5 +1,11 @@
+import Tourism from "./components/Tourism";
+
 function App() {
-  return <> </>;
+  return (
+    <>
+      <Tourism />
+    </>
+  );
 }
 
 export default App;
