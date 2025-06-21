@@ -1,4 +1,4 @@
-import Tourism from "./components/Tourism";
+import Tourism from "./componens/Tourism";
 
 function App() {
   return (
