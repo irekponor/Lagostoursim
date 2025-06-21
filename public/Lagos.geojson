@@ -1,0 +1,187 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lekki Conservation Centre",
+        "description": "Nature reserve with canopy walkway and wildlife."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.5318,
+          6.4429
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tarkwa Bay Beach",
+        "description": "Island beach accessible by boat with calm waters."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.3978,
+          6.401
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Elegushi Beach",
+        "description": "Private beach with nightlife and fun crowd."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.4942,
+          6.4215
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Freedom Park",
+        "description": "Cultural park on a former colonial prison site."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.3958,
+          6.4514
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "National Museum, Onikan",
+        "description": "Museum of Nigerian history and culture."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.4014,
+          6.4444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Badagry Black Heritage Museum",
+        "description": "Museum highlighting the transatlantic slave trade."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.9947,
+          6.4166
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kalakuta Republic Museum",
+        "description": "Home and museum of Afrobeat legend Fela Kuti."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.3515,
+          6.5947
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nike Art Gallery",
+        "description": "West Africa\u2019s largest art gallery."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.4936,
+          6.4426
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lekki Arts and Crafts Market",
+        "description": "Open-air market for handmade crafts and artwork."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.5287,
+          6.4466
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "National Theatre",
+        "description": "Iconic venue for arts and cultural events."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.35,
+          6.4864
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Terra Kulture",
+        "description": "Cultural center for Nigerian arts and cuisine."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.4358,
+          6.4269
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Eko Atlantic City",
+        "description": "Modern city built on reclaimed land."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.3915,
+          6.4084
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Makoko Floating Village",
+        "description": "Informal community on stilts over the lagoon."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.3914,
+          6.5007
+        ]
+      }
+    }
+  ]
+}
