@@ -39,7 +39,10 @@ const Tourism = () => {
       zoom={11}
       style={{ height: "100vh", width: "100%" }}
     >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution="© OpenStreetMap"
+      />
       {geoData && <GeoJSON data={geoData} onEachFeature={onEachFeature} />}
     </MapContainer>
   );
