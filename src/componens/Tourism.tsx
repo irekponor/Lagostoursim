@@ -18,7 +18,7 @@ const Tourism = () => {
 
     const popupContent = `
       <strong>${name}</strong><br/>
-      <span>,<i>${description}</i></span>
+      <span>,${description}</span>
     `;
     layer.bindPopup(popupContent);
   };
