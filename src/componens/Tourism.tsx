@@ -18,10 +18,19 @@ const Tourism = () => {
       feature.properties?.description || "No description available.";
 
     const popupContent = `
-      <strong>${name}</strong><br/>
-      <span>,${description}</span>
-    `;
+    <strong>${name}</strong><br/>
+    <span>${description}</span>
+  `;
+
     layer.bindPopup(popupContent);
+
+    layer.on("click", function (e: any) {
+      const latlng = e.latlng;
+      layer._map.flyTo(latlng, 15, { duration: 1.5 });
+      layer._map.setView(latlng, 15, {
+        animate: true,
+      });
+    });
   };
 
   return (
