@@ -21,7 +21,7 @@ const Tourism = () => {
     const name = feature.properties?.name || "Unknown Site";
     const description =
       feature.properties?.description || "No description available.";
-    const [lon, lat] = feature.geometry?.coordinates || [3.3792, 6.5244]; // fallback
+    const [lon, lat] = feature.geometry?.coordinates || [3.3792, 6.5244];
 
     const popupContent = document.createElement("div");
     popupContent.innerHTML = `
