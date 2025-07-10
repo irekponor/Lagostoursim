@@ -51,6 +51,7 @@ const Tourism = () => {
             new Viewer({
               container,
               imageId,
+              // @ts-expect-error: accessToken is valid at runtime even if type is missing
               accessToken: MAPILLARY_TOKEN,
             });
           } else {
