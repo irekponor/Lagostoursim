@@ -21,7 +21,7 @@ const Tourism = () => {
     const name = feature.properties?.name || "Unknown Site";
     const description =
       feature.properties?.description || "No description available.";
-    const imageKey = feature.properties?.mapillaryId; // Add this to your GeoJSON if available
+    const imageKey = feature.properties?.mapillaryId;
 
     const popupContent = document.createElement("div");
     popupContent.innerHTML = `
