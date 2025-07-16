@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { Viewer } from "mapillary-js";
 import "mapillary-js/dist/mapillary.css";
 
-const MAPILLARY_TOKEN = "";
+const MAPILLARY_TOKEN =
+  "MLY|24058407673812411|e7ae8c0fdc9e3f52abc823ef6706ca5f";
 
 const Tourism = () => {
   const [geoData, setGeoData] = useState<any>(null);
