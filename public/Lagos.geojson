@@ -5,8 +5,7 @@
       "type": "Feature",
       "properties": {
         "name": "Lekki Conservation Centre",
-        "description": "Nature reserve with canopy walkway and wildlife.",
-         "mapillaryId": "2626858960780487"
+        "description": "Nature reserve with canopy walkway and wildlife."
 
       },
       "geometry": {
