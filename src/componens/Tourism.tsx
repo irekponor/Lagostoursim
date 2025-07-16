@@ -17,6 +17,20 @@ const Tourism = () => {
       .then((data) => setGeoData(data));
   }, []);
 
+  // Fetch nearest Mapillary image ID by coordinates
+  const fetchNearestMapillaryId = async (lng: number, lat: number) => {
+    try {
+      const response = await fetch(
+        `https://graph.mapillary.com/images?access_token=${MAPILLARY_TOKEN}&fields=id&closeto=${lng},${lat}&limit=1`
+      );
+      const data = await response.json();
+      return data?.data?.[0]?.id || null;
+    } catch (error) {
+      console.error("Mapillary fetch failed:", error);
+      return null;
+    }
+  };
+
   const onEachFeature = (feature: any, layer: any) => {
     const name = feature.properties?.name || "Unknown Site";
     const description =
@@ -32,18 +46,25 @@ const Tourism = () => {
 
     layer.bindPopup(popupContent);
 
-    layer.on("click", function (e: any) {
+    layer.on("click", async function (e: any) {
       const latlng = e.latlng;
       layer._map.flyTo(latlng, 15, { duration: 2.5, animate: true });
 
-      setTimeout(() => {
+      setTimeout(async () => {
         const container = document.getElementById("mly");
         if (container) {
-          if (imageKey) {
+          let finalImageKey = imageKey;
+
+          // If no image ID in feature, fetch it automatically
+          if (!finalImageKey && feature.geometry?.coordinates) {
+            const [lng, lat] = feature.geometry.coordinates;
+            finalImageKey = await fetchNearestMapillaryId(lng, lat);
+          }
+
+          if (finalImageKey) {
             new Viewer({
               container,
-              imageId: imageKey,
-              // @ts-expect-error: accessToken is valid at runtime even if type is missing
+              imageId: finalImageKey,
               accessToken: MAPILLARY_TOKEN,
             });
           } else {
