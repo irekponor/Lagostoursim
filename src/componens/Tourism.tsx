@@ -23,7 +23,7 @@ const Tourism = () => {
       feature.properties?.description || "No description available.";
     const imageKey = feature.properties?.mapillaryId;
 
-    // Generate a unique ID for the street view container
+    // Generate a unique ID for the Mapillary container
     const containerId = `mly-${name.replace(/\s+/g, "-").toLowerCase()}`;
 
     const popupContent = document.createElement("div");
@@ -35,25 +35,28 @@ const Tourism = () => {
 
     layer.bindPopup(popupContent);
 
+    // 🟢 Use popupopen instead of click
+    layer.on("popupopen", async function () {
+      const container = document.getElementById(containerId);
+
+      if (container) {
+        if (imageKey) {
+          new Viewer({
+            container,
+            imageId: imageKey,
+            // @ts-expect-error: accessToken is valid at runtime even if type is missing
+            accessToken: MAPILLARY_TOKEN,
+          });
+        } else {
+          container.innerHTML = "No street view available.";
+        }
+      }
+    });
+
+    // Optional: fly to the feature when clicked
     layer.on("click", function (e: any) {
       const latlng = e.latlng;
       layer._map.flyTo(latlng, 15, { duration: 2.5, animate: true });
-
-      setTimeout(() => {
-        const container = document.getElementById(containerId);
-        if (container) {
-          if (imageKey) {
-            new Viewer({
-              container,
-              imageId: imageKey,
-              // @ts-expect-error: accessToken is valid at runtime even if type is missing
-              accessToken: MAPILLARY_TOKEN,
-            });
-          } else {
-            container.innerHTML = "No street view available.";
-          }
-        }
-      }, 500);
     });
   };
 
