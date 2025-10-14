@@ -92,7 +92,7 @@ const Tourism = () => {
   return (
     <MapContainer
       center={[6.5244, 3.3792]}
-      zoom={11}
+      zoom={10}
       style={{ height: "100vh", width: "100%" }}
       preferCanvas={true} // ✅ reduces flickering and boosts performance
     >
