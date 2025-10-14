@@ -12,10 +12,9 @@ const MAPILLARY_TOKEN =
 
 const Tourism = () => {
   const [geoData, setGeoData] = useState<any>(null);
-  const [museumsData, setLagoslgaData] = useState<any>(null);
-  const [beachesData, setLagosroadData] = useState<any>(null);
+  const [LagoslgaData, setLagoslgaData] = useState<any>(null);
+  const [LagosroadData, setLagosroadData] = useState<any>(null);
 
-  // Load all GeoJSONs
   useEffect(() => {
     fetch("/Lagos.geojson")
       .then((res) => res.json())
@@ -89,15 +88,15 @@ const Tourism = () => {
           </Overlay>
         )}
 
-        {museumsData && (
-          <Overlay name="Museums">
-            <GeoJSON data={museumsData} onEachFeature={onEachFeature} />
+        {LagoslgaData && (
+          <Overlay name="Roads">
+            <GeoJSON data={LagoslgaData} onEachFeature={onEachFeature} />
           </Overlay>
         )}
 
-        {beachesData && (
-          <Overlay name="Beaches">
-            <GeoJSON data={beachesData} onEachFeature={onEachFeature} />
+        {LagosroadData && (
+          <Overlay name="LGA">
+            <GeoJSON data={LagosroadData} onEachFeature={onEachFeature} />
           </Overlay>
         )}
       </LayersControl>
