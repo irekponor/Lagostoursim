@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { Viewer } from "mapillary-js";
 import "mapillary-js/dist/mapillary.css";
-import L from "leaflet"; // ✅ Needed for marker icons
+import L from "leaflet";
 
 const { BaseLayer, Overlay } = LayersControl;
 
@@ -70,7 +70,7 @@ const Tourism = () => {
 
   // 🎨 Styles for lines and polygons
   const lineStyle = {
-    color: "blue",
+    color: "yellow",
     weight: 2.5,
     opacity: 0.9,
   };
@@ -81,25 +81,14 @@ const Tourism = () => {
     fillOpacity: 0.3,
   };
 
-  // ✅ Custom yellow marker icon
-  const yellowIcon = new L.Icon({
-    iconUrl: "/marker-icon-yellow.png", // Use your yellow marker image
-    shadowUrl: "/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
-
   return (
     <MapContainer
       center={[6.5244, 3.3792]}
-      zoom={10}
+      zoom={11}
       style={{ height: "100vh", width: "100%" }}
       preferCanvas={true}
     >
       <LayersControl position="topright">
-        {/* 🗺 Base Map */}
         <BaseLayer checked name="OpenStreetMap">
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -108,7 +97,6 @@ const Tourism = () => {
           />
         </BaseLayer>
 
-        {/* 🟢 Polygon Layer (LGA boundaries) */}
         {LagoslgaData && (
           <Overlay checked name="LGA Boundaries">
             <GeoJSON
@@ -118,8 +106,6 @@ const Tourism = () => {
             />
           </Overlay>
         )}
-
-        {/* 🔵 Line Layer (Roads) */}
         {LagosroadData && (
           <Overlay checked name="Roads">
             <GeoJSON
@@ -130,14 +116,11 @@ const Tourism = () => {
           </Overlay>
         )}
 
-        {/* 🟡 Point Layer (Tourist Attractions as markers) */}
         {geoData && (
           <Overlay checked name="Tourist Attractions">
             <GeoJSON
               data={geoData}
-              pointToLayer={(_, latlng) =>
-                L.marker(latlng, { icon: yellowIcon })
-              }
+              pointToLayer={(_, latlng) => L.marker(latlng)}
               onEachFeature={onEachFeature}
             />
           </Overlay>
