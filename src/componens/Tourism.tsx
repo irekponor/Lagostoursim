@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */ 
 import { MapContainer, TileLayer, GeoJSON, LayersControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
@@ -79,7 +79,7 @@ const Tourism = () => {
   const polygonStyle = {
     color: "green",
     weight: 1.5,
-    fillOpacity: 0.3,
+    fillOpacity: 1,
   };
 
   return (
