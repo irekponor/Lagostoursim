@@ -79,7 +79,7 @@ const Tourism = () => {
   const polygonStyle = {
     color: "green",
     weight: 1.5,
-    fillOpacity: 1,
+    fillOpacity: 0.3,
   };
 
   return (
