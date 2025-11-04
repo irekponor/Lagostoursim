@@ -1,11 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */ 
-import { MapContainer, TileLayer, GeoJSON, LayersControl, useMap } from "react-leaflet";
+ /* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  LayersControl,
+  useMap,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { Viewer } from "mapillary-js";
 import "mapillary-js/dist/mapillary.css";
 import L from "leaflet";
-import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
+import { GeoSearchControl } from "leaflet-geosearch";
 import "leaflet-geosearch/dist/geosearch.css";
 
 const { BaseLayer, Overlay } = LayersControl;
@@ -13,101 +19,122 @@ const { BaseLayer, Overlay } = LayersControl;
 const MAPILLARY_TOKEN =
   "MLY|24058407673812411|e7ae8c0fdc9e3f52abc823ef6706ca5f";
 
-const SearchControl = ({ geoData, LagoslgaData, LagosroadData }: any) => {
+/**
+ * SearchControl:
+ * - Overrides default provider behavior and searches ONLY the provided geoJSON features' properties.name
+ * - Partial (contains) match
+ * - Press Enter to search
+ * - Shows "Place not found." popup when nothing matched
+ */
+const SearchControl = ({ geoData, lgaData, roadData }: any) => {
   const map = useMap();
 
   useEffect(() => {
-    const provider = new OpenStreetMapProvider();
-
     const searchControl = new (GeoSearchControl as any)({
-      provider,
+      provider: { search: () => Promise.resolve([]) },
       style: "bar",
-      showMarker: true,
+      showMarker: false,
       showPopup: false,
       autoClose: true,
       retainZoomLevel: false,
       animateZoom: true,
-      searchLabel: "Search Lagos...",
+      searchLabel: "Search Lagos dataset...",
       keepResult: true,
     });
 
     map.addControl(searchControl);
 
-    const searchBox = document.querySelector(
-      ".leaflet-control-geosearch input"
-    ) as HTMLInputElement | null;
+    // wait a little for the control to render its input box
+    const interval = setInterval(() => {
+      const input = document.querySelector(
+        ".leaflet-control-geosearch input"
+      ) as HTMLInputElement | null;
 
-    if (searchBox) {
-      searchBox.addEventListener("keypress", (e: any) => {
-        if (e.key === "Enter") {
-          const query = e.target.value.toLowerCase().trim();
+      if (!input) return;
 
-          if (!query) return;
+      clearInterval(interval);
 
-          const allFeatures = [
-            ...(geoData?.features || []),
-            ...(LagoslgaData?.features || []),
-            ...(LagosroadData?.features || []),
-          ];
- 
-          const found = allFeatures.find(
-            (f) =>
-              f.properties?.name &&
-              f.properties.name.toLowerCase().includes(query)
-          );
+      input.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter") return;
 
-          if (found) {
-            const layer = L.geoJSON(found);
-            const bounds = layer.getBounds();
+        const query = input.value.toLowerCase().trim();
+        if (!query) return;
 
-            if (bounds.isValid()) {
-              map.fitBounds(bounds, { maxZoom: 15 });
-            } else if (found.geometry.type === "Point") {
-              const [lon, lat] = found.geometry.coordinates;
-              map.flyTo([lat, lon], 15, { animate: true, duration: 2 });
-            }
+        const allFeatures = [
+          ...(geoData?.features || []),
+          ...(lgaData?.features || []),
+          ...(roadData?.features || []),
+        ];
 
+        const found = allFeatures.find(
+          (f: any) =>
+            f?.properties?.name &&
+            f.properties.name.toLowerCase().includes(query)
+        );
+
+        if (found) {
+          const layer = L.geoJSON(found);
+          const bounds = layer.getBounds();
+
+          if (bounds.isValid()) {
+            map.fitBounds(bounds, { maxZoom: 15 });
+          } else if (found.geometry?.type === "Point") {
             const [lon, lat] = found.geometry.coordinates;
-            L.popup()
-              .setLatLng([lat, lon])
-              .setContent(`<b>${found.properties.name}</b><br/>${found.properties.description || ""}`)
-              .openOn(map);
-          } else {
-
-            L.popup()
-              .setLatLng(map.getCenter())
-              .setContent("<b>Place not found.</b>")
-              .openOn(map);
+            map.flyTo([lat, lon], 15, { animate: true, duration: 1.2 });
           }
+
+          const popupLatLng =
+            found.geometry?.type === "Point"
+              ? [found.geometry.coordinates[1], found.geometry.coordinates[0]]
+              : bounds.getCenter();
+
+          L.popup()
+          //@ts-ignore: acessToken is valid at runtime even if type is missing
+            .setLatLng(popupLatLng)
+            .setContent(
+              `<b>${found.properties.name}</b><br/>${
+                found.properties.description || ""
+              }`
+            )
+            .openOn(map);
+        } else {
+          L.popup()
+            .setLatLng(map.getCenter())
+            .setContent("<b>Place not found.</b>")
+            .openOn(map);
         }
       });
-    }
+    }, 300);
 
     return () => {
+      clearInterval(interval);
       map.removeControl(searchControl);
     };
-  }, [map, geoData, LagoslgaData, LagosroadData]);
+  }, [map, geoData, lgaData, roadData]);
 
   return null;
 };
 
 const Tourism = () => {
   const [geoData, setGeoData] = useState<any>(null);
-  const [LagoslgaData, setLagoslgaData] = useState<any>(null);
-  const [LagosroadData, setLagosroadData] = useState<any>(null);
+  const [lagosLgaData, setLagosLgaData] = useState<any>(null);
+  const [lagosRoadData, setLagosRoadData] = useState<any>(null);
 
   useEffect(() => {
     fetch("/Lagos.geojson")
       .then((res) => res.json())
-      .then((data) => setGeoData(data));
+      .then((data) => setGeoData(data))
+      .catch(() => setGeoData(null));
 
     fetch("/Lagoslga.geojson")
       .then((res) => res.json())
-      .then((data) => setLagoslgaData(data));
+      .then((data) => setLagosLgaData(data))
+      .catch(() => setLagosLgaData(null));
 
     fetch("/Lagosroad.geojson")
       .then((res) => res.json())
-      .then((data) => setLagosroadData(data));
+      .then((data) => setLagosRoadData(data))
+      .catch(() => setLagosRoadData(null));
   }, []);
 
   const onEachFeature = (feature: any, layer: any) => {
@@ -175,20 +202,20 @@ const Tourism = () => {
           />
         </BaseLayer>
 
-        {LagoslgaData && (
+        {lagosLgaData && (
           <Overlay checked name="LGA Boundaries">
             <GeoJSON
-              data={LagoslgaData}
+              data={lagosLgaData}
               style={polygonStyle}
               onEachFeature={onEachFeature}
             />
           </Overlay>
         )}
 
-        {LagosroadData && (
+        {lagosRoadData && (
           <Overlay checked name="Roads">
             <GeoJSON
-              data={LagosroadData}
+              data={lagosRoadData}
               style={lineStyle}
               onEachFeature={onEachFeature}
             />
@@ -208,8 +235,8 @@ const Tourism = () => {
 
       <SearchControl
         geoData={geoData}
-        lgaData={LagoslgaData}
-        roadData={LagosroadData}
+        lgaData={lagosLgaData}
+        roadData={lagosRoadData}
       />
     </MapContainer>
   );
