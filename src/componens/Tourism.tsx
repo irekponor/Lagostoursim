@@ -27,13 +27,12 @@ const SearchControl = ({ geoData, LagoslgaData, LagosroadData }: any) => {
       autoClose: true,
       retainZoomLevel: false,
       animateZoom: true,
-      searchLabel: "Search Lagos or attractions...",
+      searchLabel: "Search Lagos...",
       keepResult: true,
     });
 
     map.addControl(searchControl);
 
-    // ✅ Custom search behavior
     const searchBox = document.querySelector(
       ".leaflet-control-geosearch input"
     ) as HTMLInputElement | null;
@@ -50,8 +49,7 @@ const SearchControl = ({ geoData, LagoslgaData, LagosroadData }: any) => {
             ...(LagoslgaData?.features || []),
             ...(LagosroadData?.features || []),
           ];
-
-          // ✅ Partial match search (contains)
+ 
           const found = allFeatures.find(
             (f) =>
               f.properties?.name &&
@@ -69,14 +67,13 @@ const SearchControl = ({ geoData, LagoslgaData, LagosroadData }: any) => {
               map.flyTo([lat, lon], 15, { animate: true, duration: 2 });
             }
 
-            // Optionally open popup on found location
             const [lon, lat] = found.geometry.coordinates;
             L.popup()
               .setLatLng([lat, lon])
               .setContent(`<b>${found.properties.name}</b><br/>${found.properties.description || ""}`)
               .openOn(map);
           } else {
-            // 🚨 Show popup if place not found
+
             L.popup()
               .setLatLng(map.getCenter())
               .setContent("<b>Place not found.</b>")
@@ -209,7 +206,6 @@ const Tourism = () => {
         )}
       </LayersControl>
 
-      {/* 🧭 Add search control to map */}
       <SearchControl
         geoData={geoData}
         lgaData={LagoslgaData}
