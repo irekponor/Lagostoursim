@@ -19,13 +19,6 @@ const { BaseLayer, Overlay } = LayersControl;
 const MAPILLARY_TOKEN =
   "MLY|24058407673812411|e7ae8c0fdc9e3f52abc823ef6706ca5f";
 
-/**
- * SearchControl:
- * - Overrides default provider behavior and searches ONLY the provided geoJSON features' properties.name
- * - Partial (contains) match
- * - Press Enter to search
- * - Shows "Place not found." popup when nothing matched
- */
 const SearchControl = ({ geoData, lgaData, roadData }: any) => {
   const map = useMap();
 
@@ -44,7 +37,6 @@ const SearchControl = ({ geoData, lgaData, roadData }: any) => {
 
     map.addControl(searchControl);
 
-    // wait a little for the control to render its input box
     const interval = setInterval(() => {
       const input = document.querySelector(
         ".leaflet-control-geosearch input"
