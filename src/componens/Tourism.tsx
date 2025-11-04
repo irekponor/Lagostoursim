@@ -62,14 +62,12 @@ const Tourism = () => {
       }
     });
 
-    // Smooth zoom animation on click
     layer.on("click", (e: any) => {
       const latlng = e.latlng;
       layer._map.flyTo(latlng, 15, { duration: 2.5, animate: true });
     });
   };
 
-  // 🎨 Styles for lines and polygons
   const lineStyle = {
     color: "yellow",
     weight: 2.5,
