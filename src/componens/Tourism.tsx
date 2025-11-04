@@ -1,15 +1,76 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */ 
-import { MapContainer, TileLayer, GeoJSON, LayersControl } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, LayersControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { Viewer } from "mapillary-js";
 import "mapillary-js/dist/mapillary.css";
 import L from "leaflet";
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
+import "leaflet-geosearch/dist/geosearch.css";
 
 const { BaseLayer, Overlay } = LayersControl;
 
 const MAPILLARY_TOKEN =
   "MLY|24058407673812411|e7ae8c0fdc9e3f52abc823ef6706ca5f";
+
+const SearchControl = ({ geoData, lgaData, roadData }: any) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const provider = new OpenStreetMapProvider();
+
+    const searchControl = new (GeoSearchControl as any)({
+      provider,
+      style: "bar",
+      showMarker: true,
+      showPopup: false,
+      autoClose: true,
+      retainZoomLevel: false,
+      animateZoom: true,
+      searchLabel: "Search Lagos or attractions...",
+      keepResult: true,
+    });
+
+    map.addControl(searchControl);
+
+    // 🔍 Custom GeoJSON search
+    const input = document.querySelector(".glass");
+    const searchBox = document.querySelector(".leaflet-control-geosearch input");
+
+    if (searchBox) {
+      searchBox.addEventListener("keypress", (e: any) => {
+        if (e.key === "Enter") {
+          const query = e.target.value.toLowerCase();
+
+          // Check GeoJSON layers for matching feature
+          const allFeatures = [
+            ...(geoData?.features || []),
+            ...(lgaData?.features || []),
+            ...(roadData?.features || []),
+          ];
+
+          const found = allFeatures.find(
+            (f) =>
+              f.properties?.name &&
+              f.properties.name.toLowerCase().includes(query)
+          );
+
+          if (found) {
+            const layer = L.geoJSON(found);
+            const bounds = layer.getBounds();
+            map.fitBounds(bounds);
+          }
+        }
+      });
+    }
+
+    return () => {
+      map.removeControl(searchControl);
+    };
+  }, [map, geoData, lgaData, roadData]);
+
+  return null;
+};
 
 const Tourism = () => {
   const [geoData, setGeoData] = useState<any>(null);
@@ -104,6 +165,7 @@ const Tourism = () => {
             />
           </Overlay>
         )}
+
         {LagosroadData && (
           <Overlay checked name="Roads">
             <GeoJSON
@@ -124,6 +186,13 @@ const Tourism = () => {
           </Overlay>
         )}
       </LayersControl>
+
+      {/* 🧭 Add search control to map */}
+      <SearchControl
+        geoData={geoData}
+        lgaData={LagoslgaData}
+        roadData={LagosroadData}
+      />
     </MapContainer>
   );
 };
