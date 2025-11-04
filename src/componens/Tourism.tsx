@@ -13,7 +13,7 @@ const { BaseLayer, Overlay } = LayersControl;
 const MAPILLARY_TOKEN =
   "MLY|24058407673812411|e7ae8c0fdc9e3f52abc823ef6706ca5f";
 
-const SearchControl = ({ geoData, lgaData, roadData }: any) => {
+const SearchControl = ({ geoData, LagoslgaData, LagosroadData }: any) => {
   const map = useMap();
 
   useEffect(() => {
@@ -33,22 +33,25 @@ const SearchControl = ({ geoData, lgaData, roadData }: any) => {
 
     map.addControl(searchControl);
 
-    // 🔍 Custom GeoJSON search
-    const input = document.querySelector(".glass");
-    const searchBox = document.querySelector(".leaflet-control-geosearch input");
+    // ✅ Custom search behavior
+    const searchBox = document.querySelector(
+      ".leaflet-control-geosearch input"
+    ) as HTMLInputElement | null;
 
     if (searchBox) {
       searchBox.addEventListener("keypress", (e: any) => {
         if (e.key === "Enter") {
-          const query = e.target.value.toLowerCase();
+          const query = e.target.value.toLowerCase().trim();
 
-          // Check GeoJSON layers for matching feature
+          if (!query) return;
+
           const allFeatures = [
             ...(geoData?.features || []),
-            ...(lgaData?.features || []),
-            ...(roadData?.features || []),
+            ...(LagoslgaData?.features || []),
+            ...(LagosroadData?.features || []),
           ];
 
+          // ✅ Partial match search (contains)
           const found = allFeatures.find(
             (f) =>
               f.properties?.name &&
@@ -58,7 +61,26 @@ const SearchControl = ({ geoData, lgaData, roadData }: any) => {
           if (found) {
             const layer = L.geoJSON(found);
             const bounds = layer.getBounds();
-            map.fitBounds(bounds);
+
+            if (bounds.isValid()) {
+              map.fitBounds(bounds, { maxZoom: 15 });
+            } else if (found.geometry.type === "Point") {
+              const [lon, lat] = found.geometry.coordinates;
+              map.flyTo([lat, lon], 15, { animate: true, duration: 2 });
+            }
+
+            // Optionally open popup on found location
+            const [lon, lat] = found.geometry.coordinates;
+            L.popup()
+              .setLatLng([lat, lon])
+              .setContent(`<b>${found.properties.name}</b><br/>${found.properties.description || ""}`)
+              .openOn(map);
+          } else {
+            // 🚨 Show popup if place not found
+            L.popup()
+              .setLatLng(map.getCenter())
+              .setContent("<b>Place not found.</b>")
+              .openOn(map);
           }
         }
       });
@@ -67,7 +89,7 @@ const SearchControl = ({ geoData, lgaData, roadData }: any) => {
     return () => {
       map.removeControl(searchControl);
     };
-  }, [map, geoData, lgaData, roadData]);
+  }, [map, geoData, LagoslgaData, LagosroadData]);
 
   return null;
 };
