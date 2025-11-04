@@ -12,10 +12,10 @@
   "dependencies": {
     "leaflet": "^1.9.4",
     "leaflet-geosearch": "^4.2.2",
-    "mapillary-js": "^4.0.0-beta.1",
+    "mapillary-js": "^4.1.2",
     "react": "^19.0.0-rc.1",
     "react-dom": "^19.0.0-rc.1",
-    "react-leaflet": "^5.0.0-rc.2"
+    "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
