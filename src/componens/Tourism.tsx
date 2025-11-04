@@ -195,7 +195,7 @@ const Tourism = () => {
         </BaseLayer>
 
         {lagosLgaData && (
-          <Overlay checked name="LGA Boundaries">
+          <Overlay checked name="LGA Areas">
             <GeoJSON
               data={lagosLgaData}
               style={polygonStyle}
