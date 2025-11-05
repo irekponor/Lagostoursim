@@ -17,7 +17,7 @@ import "leaflet-geosearch/dist/geosearch.css";
 const { BaseLayer, Overlay } = LayersControl;
 
 const MAPILLARY_TOKEN =
-  "MLY|24058407673812411|e7ae8c0fdc9e3f52abc823ef6706ca5f";
+  "MLY| ";
 
 const SearchControl = ({ geoData, lgaData, roadData }: any) => {
   const map = useMap();
