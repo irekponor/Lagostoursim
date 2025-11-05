@@ -118,7 +118,8 @@
       "type": "Feature",
       "properties": {
         "name": "Lekki Arts and Crafts Market",
-        "description": "Open-air market for handmade crafts and artwork."
+        "description": "Open-air market for handmade crafts and artwork.",
+        "mapillaryId": "744508039568752"
       },
       "geometry": {
         "type": "Point",
