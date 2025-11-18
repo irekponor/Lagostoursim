@@ -104,7 +104,7 @@
       "type": "Feature",
       "properties": {
         "name": "Nike Art Gallery",
-        "description": "West Africa\u2019s largest art gallery."
+        "description": "West Africa largest art gallery."
       },
       "geometry": {
         "type": "Point",
