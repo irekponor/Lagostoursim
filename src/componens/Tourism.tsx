@@ -132,7 +132,7 @@ const Tourism = () => {
   const onEachFeature = (feature: any, layer: any) => {
     const name = feature.properties?.name || "Unknown Site";
     const description =
-      feature.properties?.description || "No description available.";
+      feature.properties?.description || "";
     const imageKey = feature.properties?.mapillaryId;
 
     const containerId = `mly-${name.replace(/\s+/g, "-").toLowerCase()}`;
