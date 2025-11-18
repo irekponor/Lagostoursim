@@ -31,7 +31,7 @@ const SearchControl = ({ geoData, lgaData, roadData }: any) => {
       autoClose: true,
       retainZoomLevel: false,
       animateZoom: true,
-      searchLabel: "Search Lagos dataset...",
+      searchLabel: "Search Lagos...",
       keepResult: true,
     });
 
